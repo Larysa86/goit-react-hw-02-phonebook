@@ -4,15 +4,15 @@ import css from './Filter.module.css';
 
 export const Filter = ({ onChange, value }) => {
   return (
-    <h2 className={css.filterTitle} htmlFor="filter">
+    <label className={css.filterLabel} htmlFor="filter">
       Find contacs by name
-      <input
+      <input className={css.filterInput}
         type="text"
         name="filter"
         value={value}
         onChange={onChange}
       />
-    </h2>
+    </label>
   );
 };
 

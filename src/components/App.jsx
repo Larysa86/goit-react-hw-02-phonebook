@@ -74,7 +74,7 @@ export class App extends Component {
         <ContactList
           onDeleteContact={deleteContact}
           contacts={visibleContacts}
-          totalContscts={totalContacts}
+          totalContacts={totalContacts}
         />
       </div>
     );
