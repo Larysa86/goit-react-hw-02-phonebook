@@ -4,8 +4,6 @@ import { nanoid } from 'nanoid';
 import { ContactForm, ContactList, Filter } from './index';
 import css from './App.module.css';
 
-
-
 export class App extends Component {
   state = {
     contacts: [
@@ -29,14 +27,14 @@ export class App extends Component {
     );
 
     matchName
-      ? Notify.info(`${name} is already in contacts`)
+      ? Notify.info(`${name} is already in contacts!`)
       : this.setState(({ contacts }) => ({
           contacts: [newContact, ...contacts],
         }));
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
   };
 
   getVisibleContacts = () => {
@@ -63,13 +61,9 @@ export class App extends Component {
 
     return (
       <div className={css.wrapper}>
-        <h1 className={css.title}>
-          Phonebook
-        </h1>
+        <h1 className={css.title}>Phonebook</h1>
         <ContactForm onSubmit={addContact} />
-        <h2 className={css.titleContacts}>
-          Contacts
-        </h2>
+        <h2 className={css.titleContacts}>Contacts</h2>
         <Filter value={filter} onChange={changeFilter} />
         <ContactList
           onDeleteContact={deleteContact}
@@ -80,4 +74,3 @@ export class App extends Component {
     );
   }
 }
-

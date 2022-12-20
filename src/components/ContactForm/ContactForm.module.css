@@ -17,7 +17,7 @@
 }
 
 .inputForm {
-display: block;
+    display: block;
     margin-top: 4px;
 }
 
@@ -28,9 +28,12 @@ display: block;
     border-radius: 5px;
 
     cursor: pointer;
-   
+
     border: 1px solid gray;
 
 }
 
-
+.contactButton:hover,
+.contactButton:focus {
+    background-color: yellowgreen;
+}

@@ -5,7 +5,11 @@ export const ContactItem = ({ name, number, onDeleteContact }) => {
   return (
     <li className={css.contactItem}>
       {name}: {number}
-      <button className={css.contactBtn} type="button" onClick={onDeleteContact}>
+      <button
+        className={css.contactBtn}
+        type="button"
+        onClick={onDeleteContact}
+      >
         Delete
       </button>
     </li>
