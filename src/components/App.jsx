@@ -14,63 +14,113 @@ export class App extends Component {
     ],
     filter: '',
   };
+// handleInputChange = (e) => {
+//     this.setState({
+//       [e.currentTarget.name]: e.currentTarget.value,
+//     });
+//   };
 
-  addContact = ({ name, number }) => {
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
+//   addContact = (data) => {
+//     const { name, number } = data;
+//     if (this.checkDoubleContact(data)) {
+//       Notify.info(`${name} is already in your contacts!`);
+//       return;
+//     }
+//     const newContact = {
+//       id: nanoid(),
+//       name,
+//       number,
+//     };
+//     this.setState(prevState => ({
+//       contacts: [newContact, ...prevState.contacts],
+//     }));
+//   };
+
+//   checkDoubleContact = (inputData) => {
+//     return this.state.contacts.find(contact => contact.name === inputData.name);
+//   };
+
+//   getVisibleContacts = () => {
+//     const { contacts, filter } = this.state;
+//     const normalized = filter.toLowerCase();
+//     return contacts.filter(contact => contact.name.toLowerCase().includes(normalized));
+//   };
+
+//   deleteContact = (id) => {
+//     this.setState(prevState => ({
+//       contacts: prevState.contacts.filter(el => el.id !== id),
+//     }));
+//   };
+
+//   render() {
+//     const visibleContacts = this.getVisibleContacts();
+
+//     return (
+//       <div className={css.wrapper}>
+//         <h1 className={css.title}>Phonebook</h1>
+//         <ContactForm onSubmit={this.addContact} />
+//         <h2 className={css.titleContacts}>Contacts</h2>
+//         <Filter value={this.state.filter} onFilter={this.handleInputChange} />
+//         <ContactList contacts={visibleContacts} deleteContact={this.deleteContact} />
+//       </div>
+//     );
+//   }
+    addContact = ({ name, number }) => {
+      const newContact = {
+        id: nanoid(),
+        name,
+        number,
+      };
+      const currentName = name;
+      const matchName = this.state.contacts.some(
+        ({ name }) => name === currentName
+      );
+
+      matchName
+        ? Notify.info(`${name} is already in contacts!`)
+        : this.setState(({ contacts }) => ({
+            contacts: [newContact, ...contacts],
+          }));
     };
-    const currentName = name;
-    const matchName = this.state.contacts.some(
-      ({ name }) => name === currentName
-    );
 
-    matchName
-      ? Notify.info(`${name} is already in contacts!`)
-      : this.setState(({ contacts }) => ({
-          contacts: [newContact, ...contacts],
-        }));
-  };
+    changeFilter = event => {
+      this.setState({ filter: event.currentTarget.value });
+    };
 
-  changeFilter = event => {
-    this.setState({ filter: event.currentTarget.value });
-  };
+    getVisibleContacts = () => {
+      const { contacts, filter } = this.state;
+      const normalizedFilter = filter.toLowerCase().trim();
 
-  getVisibleContacts = () => {
-    const { contacts, filter } = this.state;
-    const normalizedFilter = filter.toLowerCase().trim();
+      return contacts.filter(({ name }) =>
+        name.toLowerCase().includes(normalizedFilter)
+      );
+    };
 
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(normalizedFilter)
-    );
-  };
+    deleteContact = contactId => {
+      this.setState(({ contacts }) => ({
+        contacts: contacts.filter(({ id }) => id !== contactId),
+      }));
+    };
 
-  deleteContact = contactId => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(({ id }) => id !== contactId),
-    }));
-  };
+    render() {
+      const { contacts, filter } = this.state;
+      const { addContact, changeFilter, deleteContact, getVisibleContacts } =
+        this;
+      const visibleContacts = getVisibleContacts();
+      const totalContacts = contacts.length;
 
-  render() {
-    const { contacts, filter } = this.state;
-    const { addContact, changeFilter, deleteContact, getVisibleContacts } =
-      this;
-    const visibleContacts = getVisibleContacts();
-    const totalContacts = contacts.length;
-
-    return (
-      <div className={css.wrapper}>
-        <h1 className={css.title}>Phonebook</h1>
-        <ContactForm onSubmit={addContact} />
-        <h2 className={css.titleContacts}>Contacts</h2>
-        <Filter value={filter} onChange={changeFilter} />
-        <ContactList
-          onDeleteContact={deleteContact}
-          contacts={visibleContacts}
-          totalContacts={totalContacts}
-        />
-      </div>
-    );
-  }
+      return (
+        <div className={css.wrapper}>
+          <h1 className={css.title}>Phonebook</h1>
+          <ContactForm onSubmit={addContact} />
+          <h2 className={css.titleContacts}>Contacts</h2>
+          <Filter value={filter} onChange={changeFilter} />
+          <ContactList
+            deleteContact={deleteContact}
+            contacts={visibleContacts}
+            totalContacts={totalContacts}
+          />
+        </div>
+      );
+    }
 }

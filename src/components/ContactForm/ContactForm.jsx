@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 
 export class ContactForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+  
   state = {
     name: '',
     number: '',
   };
 
-  nameInputId = nanoid();
-  numberInputId = nanoid();
-
+ 
   handleNameChange = event => {
     const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
@@ -33,7 +34,7 @@ export class ContactForm extends Component {
   render() {
     return (
       <form className={css.contactForm} onSubmit={this.handleSubmit}>
-        <label className={css.label} htmlFor={this.nameInputId}>
+        <label className={css.label}>
           Name
           <input
             className={css.inputForm}
@@ -47,7 +48,7 @@ export class ContactForm extends Component {
             id={this.nameInputId}
           />
         </label>
-        <label className={css.label} htmlFor={this.numberInputId}>
+        <label className={css.label}>
           Number
           <input
             className={css.inputForm}
@@ -69,9 +70,3 @@ export class ContactForm extends Component {
   }
 }
 
-ContactForm.propTypes = {
-  name: PropTypes.string,
-  value: PropTypes.string,
-  handleSubmit: PropTypes.func,
-  handleNameChange: PropTypes.func,
-};

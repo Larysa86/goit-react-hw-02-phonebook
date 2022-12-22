@@ -2,18 +2,19 @@ import PropTypes from 'prop-types';
 import { ContactItem } from '../ContactItem/ContactItem';
 import css from './ContactList.module.css';
 
-export const ContactList = ({ contacts, onDeleteContact, totalContacts }) => {
+export const ContactList = ({ contacts, deleteContact, totalContacts }) => {
   return (
     <ul className={css.contactsList}>
-      {contacts.map(({ number, name, id }) => (
+      {contacts.map(({ id, name, number }) => (
         <ContactItem
           key={id}
-          number={number}
+          id={id}
           name={name}
-          onDeleteContact={() => onDeleteContact(id)}
+          number={number}
+          del={deleteContact}
         />
       ))}
-      <p className={css.totalContacts}>Кількість контактів: {totalContacts}</p>
+       <p className={css.totalContacts}>Кількість контактів: {totalContacts}</p>
     </ul>
   );
 };
@@ -21,11 +22,9 @@ export const ContactList = ({ contacts, onDeleteContact, totalContacts }) => {
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.exact({
-      number: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
     })
   ),
-  onDeleteContact: PropTypes.func.isRequired,
-  totalContacts: PropTypes.number,
 };
